@@ -3,7 +3,6 @@
 import * as React from "react"
 import {
   Focusable,
-  OverlayArrow,
   Tooltip as TooltipPrimitive,
   TooltipTrigger as TooltipTriggerPrimitive,
 } from "react-aria-components"
