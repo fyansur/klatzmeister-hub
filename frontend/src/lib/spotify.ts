@@ -1,10 +1,10 @@
-const API_BASE = "http://127.0.0.1:5000/api/spotify";
+const API_BASE = `${import.meta.env.VITE_SPOTIFY_API_BASE_URL}`;
 
 export async function getPlaylistTracks() {
   const res = await fetch(`${API_BASE}/playlist-tracks`, {
     credentials: "include",
   });
-
-  if (!res.ok) throw new Error("Gagal fetch playlist tracks");
+  
+  if (!res.ok) throw new Error("Failed to fetch playlist tracks");
   return res.json();
 }

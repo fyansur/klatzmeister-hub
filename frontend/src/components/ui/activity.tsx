@@ -3,6 +3,10 @@ import vscodeIcon from "@/assets/visual-studio-code-icons/vscode.svg"
 import fallbackBackground from "@/assets/fallback_background.jpg"
 import { SpotifyProgress } from "./spotify-progress"
 
+
+const VSCODE_APP_NAME = "Visual Studio Code"
+const VSCODE_STATUS_LABEL = "WORKING ON"
+
 interface Activity {
     id: string
     name: string
@@ -73,21 +77,19 @@ function ActivityCard({ activity, kv }: ActivityCardProps) {
     const [, setTick] = useState(0)
 
     useEffect(() => {
-        // Kalau tidak ada waktu start, tidak perlu jalankan interval
         if (!activity.timestamps?.start) return
 
-        // Jalankan interval setiap 1000ms (1 detik)
         const interval = setInterval(() => {
             setTick((prev) => prev + 1)
         }, 1000)
 
-        // Bersihkan interval saat komponen di-unmount
         return () => clearInterval(interval)
     }, [activity.timestamps?.start])
 
     const imageUrl = getAssetUrl(activity.assets?.large_image, activity.application_id)
     const label = ACTIVITY_TYPE_LABEL[activity.type] ?? "Doing"
-    const isVSCode = activity.name === "Visual Studio Code"
+    
+    const isVSCode = activity.name === VSCODE_APP_NAME
 
     return (
         <>
@@ -105,23 +107,20 @@ function ActivityCard({ activity, kv }: ActivityCardProps) {
                 <div className="w-full h-full rounded-lg z-10 p-3 space-y-3 text-foreground">
                     <div className="flex flex-row items-center justify-between gap-3 w-full">
                         <div className="truncate space-y-1 flex-1">
-                            {activity.name === "Visual Studio Code" ? (
+                            {isVSCode ? (
                                 <div className="text-[10px] flex flex-col font-medium text-background/50 dark:text-foreground/50">
-                                    <span className="uppercase font-light tracking-widest">WORKING ON</span>
+                                    <span className="uppercase font-light tracking-widest">{VSCODE_STATUS_LABEL}</span>
                                 </div>
                             ) : (
-                                <>
-                                    <div className="text-[10px] flex flex-col font-medium text-background/50 dark:text-foreground/50">
-                                        <span className="uppercase font-light tracking-widest">{label}&nbsp;{activity.name}</span>
-                                    </div>
-                                </>
+                                <div className="text-[10px] flex flex-col font-medium text-background/50 dark:text-foreground/50">
+                                    <span className="uppercase font-light tracking-widest">{label}&nbsp;{activity.name}</span>
+                                </div>
                             )}
-                            {activity.name === "Visual Studio Code" ? (
-                                <>
-                                    <p className="truncate text-sm font-semibold text-background dark:text-foreground">
-                                        {kv?.currentproject}
-                                    </p>
-                                </>
+
+                            {isVSCode ? (
+                                <p className="truncate text-sm font-semibold text-background dark:text-foreground">
+                                    {kv?.currentproject}
+                                </p>
                             ) : (
                                 <>
                                     {activity.details && (
@@ -131,22 +130,16 @@ function ActivityCard({ activity, kv }: ActivityCardProps) {
                                     )}
                                 </>
                             )}
+
                             {activity.state && (
                                 <p className="truncate text-xs text-background/50 dark:text-foreground/50">{activity.state}</p>
                             )}
-                            {activity.type === 2 ?
-                                null
-                                : (
-                                    <>
-                                        {
-                                            activity.timestamps?.start && (
-                                                <p className="text-xs text-background/50 dark:text-foreground/50">
-                                                    {formatElapsed(activity.timestamps.start)}
-                                                </p>
-                                            )
-                                        }
-                                    </>
-                                )}
+
+                            {activity.type !== 2 && activity.timestamps?.start && (
+                                <p className="text-xs text-background/50 dark:text-foreground/50">
+                                    {formatElapsed(activity.timestamps.start)}
+                                </p>
+                            )}
                         </div>
 
                         <div className="self-start shrink-0 bg-background dark:bg-foreground ">
@@ -158,7 +151,6 @@ function ActivityCard({ activity, kv }: ActivityCardProps) {
                                 />
                             ) : isVSCode ? (
                                 <div className="flex size-16 items-center justify-center">
-
                                     <img
                                         src={vscodeIcon}
                                         alt={activity.assets?.large_text ?? activity.name}
@@ -167,8 +159,8 @@ function ActivityCard({ activity, kv }: ActivityCardProps) {
                                 </div>
                             ) : null}
                         </div>
-
                     </div>
+
                     {activity.name === "Spotify" && activity.timestamps?.start && activity.timestamps?.end && (
                         <div className="w-full">
                             <SpotifyProgress

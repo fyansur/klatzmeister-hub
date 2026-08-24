@@ -7,7 +7,7 @@ import { Particles } from "@/components/ui/particles"
 import { useTheme } from "./components/ui/theme-provider"
 import { useLanyard } from "use-lanyard"
 import profile from "@/data/discord-profile.json"
-import { Clock, ExternalLink, Monitor, Music } from "lucide-react"
+import { Clock, ExternalLink, Monitor } from "lucide-react"
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip"
 import { CopyUsernameButton } from "@/components/ui/copy-username-button"
 import { Separator } from "./components/ui/separator"
@@ -16,14 +16,22 @@ import { ActivityCard } from "./components/ui/activity"
 import { PlaylistTracks } from "./components/ui/playlist-tracks"
 
 function App() {
+
+  const GITHUB_URL = import.meta.env.VITE_GITHUB_URL
+  const SPOTIFY_URL = import.meta.env.VITE_SPOTIFY_URL
+  const STEAM_URL = import.meta.env.VITE_STEAM_URL
+  const WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL
   const PLAYLIST_ID = import.meta.env.VITE_SPOTIFY_PLAYLIST_ID;
   const SPOTIFY_PLAYLIST_URL = `https://open.spotify.com/playlist/${PLAYLIST_ID}`;
   const USER_ID = import.meta.env.VITE_DISCORD_USER_ID as `${bigint}`
+
   const { resolvedTheme } = useTheme()
+
   const [particleColor, setParticleColor] = useState("#ffffff")
   useEffect(() => {
     setParticleColor(resolvedTheme === "dark" ? "#ffffff" : "#000000")
   }, [resolvedTheme])
+
   const [raysColor, setRaysColor] = useState("#ffffff")
   useEffect(() => {
     setRaysColor(resolvedTheme === "dark" ? "oklch(0.37 0.00 0)" : "oklch(0.72 0.00 0)")
@@ -37,8 +45,13 @@ function App() {
 
   const { discord_user, kv, activities } = presence
 
+  // Discord Status
   const statusColor = presence.discord_status === "online" ? "text-green-500" : presence.discord_status === "idle" ? "text-yellow-500" : presence.discord_status === "dnd" ? "text-red-500" : "text-gray-500"
   const statusText = presence.discord_status === "online" ? "ONLINE" : presence.discord_status === "idle" ? "IDLE" : presence.discord_status === "dnd" ? "DND" : "OFFLINE"
+
+
+  // Discord CDN URLs
+  const guildBadgeUrl = discord_user.primary_guild?.badge ? `https://cdn.discordapp.com/clan-badges/${discord_user.primary_guild.identity_guild_id}/${discord_user.primary_guild.badge}?size=16` : null
 
   const avatarUrl = discord_user.avatar
     ? `https://cdn.discordapp.com/avatars/${discord_user.id}/${discord_user.avatar}.webp?size=256${discord_user.avatar.startsWith("a_") ? "&animated=true" : ""
@@ -57,7 +70,7 @@ function App() {
       <div className="flex min-h-screen w-full flex-col items-center space-y-6 dark:bg-stone-950">
         <Navbar>
           <NavbarContent>
-            <NavbarBrand>./klatzmeister</NavbarBrand>
+            <NavbarBrand className="lowercase">./{discord_user.global_name}</NavbarBrand>
             <NavbarActions>
               <ThemeToggle />
             </NavbarActions>
@@ -137,7 +150,7 @@ function App() {
                   <span className="border rounded-sm w-fit px-1 py-0.5 text-muted-foreground flex gap-1 text-xs items-center font-black">
                     <TooltipTrigger>
                       <div className="flex gap-1 items-center">
-                        <img src={`https://cdn.discordapp.com/clan-badges/${discord_user.primary_guild?.identity_guild_id}/${discord_user.primary_guild?.badge}.png?size=16`}></img>
+                        <img src={guildBadgeUrl ?? undefined}></img>
                         {discord_user.primary_guild?.tag}</div>
                       <Tooltip>{discord_user.primary_guild?.tag}</Tooltip>
                     </TooltipTrigger>
@@ -146,26 +159,25 @@ function App() {
                 <Separator className="my-3" />
                 <div className="text-sm text-muted-foreground dark:bg-stone-900 p-3 border rounded-md">
                   {kv.about}
-
                 </div>
                 <Separator className="my-3" />
                 <div className="grid grid-cols-4 gap-3">
-                  <a href="https://github.com/fyansur" target="_blank" rel="noopener noreferrer" className="w-full">
+                  <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="w-full">
                     <Button className="w-full border rounded-md text-base px-3 dark:text-muted-foreground items-center dark:bg-stone-900 flex gap-2">
                       <i className="bi bi-github"></i>
                     </Button>
                   </a>
-                  <a href="https://open.spotify.com/user/fyansur?si=ac8d806e4cfe4144" target="_blank" rel="noopener noreferrer" className="w-full">
+                  <a href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer" className="w-full">
                     <Button className="w-full border rounded-md p-3 text-base dark:text-muted-foreground dark:bg-stone-900 flex items-center justify-center gap-2">
                       <i className="bi bi-spotify"></i>
                     </Button>
                   </a>
-                  <a href="https://steamcommunity.com/id/suryavalid" target="_blank" rel="noopener noreferrer" className="w-full">
+                  <a href={STEAM_URL} target="_blank" rel="noopener noreferrer" className="w-full">
                     <Button className="w-full border rounded-md p-3 text-base dark:text-muted-foreground dark:bg-stone-900 flex items-center justify-center gap-2">
                       <i className="bi bi-steam"></i>
                     </Button>
                   </a>
-                  <a href="https://sofyansurya.com" target="_blank" rel="noopener noreferrer" className="w-full">
+                  <a href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="w-full">
                     <Button className="w-full border rounded-md p-3 text-base dark:text-muted-foreground dark:bg-stone-900 flex items-center justify-center gap-2">
                       <i className="bi bi-globe"></i>
                     </Button>

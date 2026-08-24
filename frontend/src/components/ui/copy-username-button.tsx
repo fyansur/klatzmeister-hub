@@ -17,8 +17,6 @@ function CopyUsernameButton({ username }: { username: string }) {
   }
 
   const handleCopy = () => {
-    // State di-set SEBELUM await, biar React Aria nangkep ini sebagai
-    // hasil langsung dari interaksi klik (bukan microtask terpisah)
     clearTimers()
     setCopied(true)
     setIsOpen(true)
@@ -33,8 +31,6 @@ function CopyUsernameButton({ username }: { username: string }) {
     }, 1500)
   }
 
-  // Kalau mouse beneran ninggalin area tombol, paksa tutup + reset,
-  // apapun status timer yang masih jalan — ini yang benerin bug "nyangkut"
   const handleMouseLeave = () => {
     clearTimers()
     setIsOpen(false)

@@ -18,7 +18,6 @@ export function PlaylistTracks() {
     getPlaylistTracks()
       .then((res) => {
         const items = res.data.items ?? [];
-        // field-nya sekarang "item", bukan "track"
         const mapped = items.map((entry: any) => entry.item).filter(Boolean);
         setTracks(mapped);
       })
@@ -31,7 +30,7 @@ export function PlaylistTracks() {
   }
 
   if (error) {
-    return <p className="text-sm text-muted-foreground">Gagal memuat playlist.</p>;
+    return <p className="text-sm text-muted-foreground">Failed to load playlist.</p>;
   }
 
   return (
