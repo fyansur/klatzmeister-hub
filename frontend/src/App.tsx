@@ -55,7 +55,7 @@ function App() {
   return (
     <>
       <div className="flex min-h-screen w-full flex-col items-center space-y-6 dark:bg-stone-950">
-        <Navbar className="fade-in animate-in duration-300">
+        <Navbar>
           <NavbarContent>
             <NavbarBrand className="lowercase">./{globalName}</NavbarBrand>
             <NavbarActions>
@@ -64,7 +64,7 @@ function App() {
           </NavbarContent>
         </Navbar>
 
-        <main className="flex xl:px-0 px-6 pb-6 w-full max-w-6xl flex-col items-center justify-center gap-6 flex-1 fade-in animate-in duration-300">
+        <main className="flex xl:px-0 px-6 pb-6 w-full max-w-6xl flex-col items-center justify-center gap-6 flex-1">
           <div className="grid xl:grid-cols-3 grid-cols-1 items-start xl:items-stretch justify-center gap-6 w-full h-full">
 
             {/* Col [ 1-2-3] : Banner */}
