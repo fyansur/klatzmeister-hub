@@ -59,7 +59,7 @@ function App() {
           <NavbarContent>
             <NavbarBrand className="lowercase">./{globalName}</NavbarBrand>
             <NavbarActions>
-              <ThemeToggle />
+              <ThemeToggle/>
             </NavbarActions>
           </NavbarContent>
         </Navbar>

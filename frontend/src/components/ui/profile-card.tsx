@@ -39,7 +39,7 @@ export function ProfileCard({ presence }: { presence: any }) {
 
       <div className="absolute top-17 left-1/2 -translate-x-1/2">
         <div className="relative size-30">
-          <img src={avatarUrl ?? undefined} alt="Avatar" className="size-30 rounded-full border-4 border-background dark:border-stone-950 duration-300 dark:bg-stone-950 object-cover" />
+          <img src={avatarUrl ?? undefined} alt="Avatar" className="size-30 rounded-full border-4 border-background dark:border-stone-950 dark:bg-stone-950 object-cover" />
           {decorationUrl && <img src={decorationUrl} alt="" className="pointer-events-none absolute inset-0 size-30 scale-110" />}
         </div>
       </div>
