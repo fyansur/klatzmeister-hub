@@ -7,7 +7,7 @@ function Navbar({ className, ...props }: React.ComponentProps<"nav">) {
     <nav
       data-slot="navbar"
       className={cn(
-        "sticky top-0 z-50 w-full dark:bg-stone-950 border-b dark:border-stone-800",
+        "sticky top-0 z-50 w-full bg-background dark:bg-stone-950 border-b dark:border-stone-800",
         className
       )}
       {...props}
